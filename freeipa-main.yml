@@ -1,0 +1,6 @@
+---
+ - hosts: ipaserver
+   user: root
+   tasks:
+   roles:
+      - freeipa

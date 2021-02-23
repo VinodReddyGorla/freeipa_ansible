@@ -1,0 +1,19 @@
+---
+   - name: installing ipa-server packages
+     yum: state=present name={{ item }}
+     with_items:
+     - ipa-server
+     - ipa-server-dns
+     - bind
+     - bind-dyndb-ldap
+   - name: setting hostname to ipa-server
+     command: hostnamectl set-hostname "{{ server_hostname }}"
+   - name: copying ip & hostname of ipa-server to /etc/hosts file
+     lineinfile:
+      path: /etc/hosts
+      line: '{{ ip_address }}   {{ server_hostname }}   {{ domain }}'
+   - name: Enable firewalld
+     service: name=firewalld state=stopped enabled=no
+     when: ansible_distribution != "Fedora" and ansible_os_family == "RedHat"
+   - name: Run the ipa-server-install command
+     command: ipa-server-install -U --setup-dns --hostname={{ server_hostname }} --realm={{ realm }} --domain={{ domain }} --ds-password={{ directory_Server_password }} --master-password={{ kerberos_master_password }} --admin-password={{ ipa_admin_password }} --ip-address={{ ip_address }} --forwarder={{ dns_forwarder_1 }}  --forwarder={{ dns_forwarder_2 }}

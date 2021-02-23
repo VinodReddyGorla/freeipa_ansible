@@ -1,0 +1,12 @@
+---
+# vars file for freeipa
+server_hostname: ipa1.ipaserver1.com
+client_hostname: ipa1.ipaclient1.com
+domain: ipaserver1.com
+realm: IPASERVER1.COM
+kerberos_master_password: password
+directory_Server_password: password
+ipa_admin_password: password
+ip_address: 192.168.32.74
+dns_forwarder_1: 8.8.8.8
+dns_forwarder_2: 8.8.4.4

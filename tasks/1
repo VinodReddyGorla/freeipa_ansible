@@ -1,0 +1,26 @@
+---
+   - name: installing ipa-server packages
+     yum: state=present name={{ item }}
+     with_items:
+     - ipa-server
+     - ipa-server-dns
+     - bind
+     - bind-dyndb-ldap
+   - name: Enable firewalld
+     service: name=firewalld state=started enabled=yes
+   - name: adding ntp service to firewalld
+     command: firewall-cmd --permanent --add-service=ntp
+   - name: adding http service to firewalld
+     command: firewall-cmd --permanent --add-service=http
+   - name: adding https service to firewalld
+     command: firewall-cmd --permanent --add-service=https
+   - name: adding ldap service to firewalld
+     command: firewall-cmd --permanent --add-service=ldap
+   - name: adding ldaps service to firewalld
+     command: firewall-cmd --permanent --add-service=ldaps
+   - name: adding kerberos service to firewalld
+     command: firewall-cmd --permanent --add-service=kerberos
+   - name: adding kpasswd service to firewalld
+     command: firewall-cmd --permanent --add-service=kpasswd
+     notify: reload firewalld
+     when: ansible_distribution != "Fedora" and ansible_os_family == "RedHat"
